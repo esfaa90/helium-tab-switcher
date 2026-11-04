@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+*.crx
+*.pem
+
+# Personal session notes
+HANDOFF.md

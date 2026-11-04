@@ -1,0 +1,211 @@
+/* The color-scheme must equal COLOR_SCHEME in content.js, or the overlay iframe paints opaque white. */
+:root {
+  color-scheme: dark;
+  --accent: #60cdff;
+  --backdrop: rgba(0, 0, 0, 0.35);
+  --panel: rgba(32, 32, 32, 0.92);
+  --panel-solid: #202020;
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --card-hover: rgba(255, 255, 255, 0.06);
+  --card-selected: rgba(255, 255, 255, 0.1);
+  --neutral: #2d2d2d;
+  --neutral-strong: #454545;
+  --text: #f3f3f3;
+  --text-muted: #c8c8c8;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+body {
+  color: var(--text);
+  font: 13px/1.3 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  cursor: default;
+  user-select: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+#backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 24px;
+  background: var(--backdrop);
+}
+
+#panel {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 6px;
+  box-sizing: border-box;
+  max-width: min(100%, 1280px);
+  max-height: 100%;
+  padding: 12px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+/* The popup window is the panel, so there is no page behind it to dim. */
+html[data-mode="popup"] #backdrop {
+  padding: 0;
+  background: var(--panel-solid);
+}
+
+html[data-mode="popup"] #panel {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.card {
+  flex: 0 1 200px;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.card:hover {
+  background: var(--card-hover);
+}
+
+.card.selected {
+  background: var(--card-selected);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--neutral);
+  border-radius: 4px;
+}
+
+.thumb-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 0 2px;
+}
+
+.title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  flex: none;
+  display: block;
+  object-fit: contain;
+}
+
+.icon-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-lg {
+  width: 48px;
+  height: 48px;
+}
+
+.letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--text);
+  background: var(--neutral-strong);
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.letter.icon-sm {
+  font-size: 10px;
+}
+
+.letter.icon-lg {
+  border-radius: 10px;
+  font-size: 26px;
+}
+
+.indicators {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--text-muted);
+}
+
+.indicator {
+  display: block;
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.empty {
+  padding: 16px 32px;
+  color: var(--text-muted);
+}
+
+/* Short on purpose: the switcher has to feel instant. */
+@media (prefers-reduced-motion: no-preference) {
+  #backdrop:not([hidden]) {
+    animation: fade-in 70ms ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+@media (max-width: 480px), (max-height: 320px) {
+  #backdrop {
+    padding: 8px;
+  }
+
+  #panel {
+    padding: 8px;
+  }
+}

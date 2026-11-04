@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Helium Tab Switcher",
+  "version": "0.1.0",
+  "description": "Alt+Tab style switcher for the loaded tabs in the current window, most recently used first.",
+  "permissions": ["tabs", "storage", "scripting", "favicon"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "commands": {
+    "cycle-next": {
+      "suggested_key": { "windows": "Ctrl+Period", "default": "Ctrl+Period" },
+      "description": "Start a session, or select the next card"
+    },
+    "cycle-prev": {
+      "suggested_key": { "windows": "Ctrl+Comma", "default": "Ctrl+Comma" },
+      "description": "Start a session, or select the previous card"
+    },
+    "commit": {
+      "suggested_key": { "windows": "Ctrl+Shift+Period", "default": "Ctrl+Shift+Period" },
+      "description": "Switch to the selected tab"
+    },
+    "cancel": {
+      "suggested_key": { "windows": "Ctrl+Shift+Comma", "default": "Ctrl+Shift+Comma" },
+      "description": "Close without switching"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_origin_as_fallback": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/switcher/switcher.html", "src/switcher/switcher.css", "src/switcher/switcher.js"],
+      "matches": ["<all_urls>"],
+      "use_dynamic_url": true
+    }
+  ]
+}
